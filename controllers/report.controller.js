@@ -44,4 +44,34 @@ async function updateReportStatus(req, res) {
     }
 }
 
-module.exports = { getReports, updateReportStatus };
+//Creator Reports
+
+async function createReport(req, res) {
+    try {
+        const db = getDB();
+        const { subject, description, campaignId } = req.body;
+
+        if (!subject || !description) {
+            return res.status(400).json({ success: false, message: "Subject and description are required" });
+        }
+
+        const report = {
+            creatorId: req.user.id,
+            campaignId: campaignId || null,
+            subject,
+            description,
+            status: "pending",
+            createdAt: new Date(),
+        };
+
+        const result = await db.collection("reports").insertOne(report);
+
+        res.status(201).json({ success: true, data: { _id: result.insertedId, ...report } });
+    } catch (err) {
+        console.error("Error creating report:", err);
+        res.status(500).json({ success: false, message: "Failed to submit report" });
+    }
+}
+
+module.exports = { getReports, updateReportStatus, createReport };
+
