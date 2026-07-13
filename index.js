@@ -107,7 +107,7 @@ const cookieParser = require("cookie-parser");
 const { connectDB } = require("./config/db");
 const categoryRoutes = require("./routes/category.routes");
 const campaignRoutes = require("./routes/campaign.routes");
-
+const contributionRoutes = require("./routes/contribution.routes");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -124,6 +124,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/categories", categoryRoutes);
 app.use("/api/campaigns", campaignRoutes);
+app.use("/api/contributions", contributionRoutes);
 
 async function start() {
     try {
