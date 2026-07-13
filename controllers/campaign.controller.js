@@ -71,5 +71,34 @@ async function getCampaignById(req, res) {
         res.status(500).json({ message: "Failed to fetch campaign" });
     }
 }
+//Update Campaign Status
 
-module.exports = { createCampaign, getCampaigns, getCampaignById };
+async function updateCampaignStatus(req, res) {
+    try {
+        const db = getDB();
+        const { id } = req.params;
+        const { status } = req.body;
+
+        const allowedStatuses = ["approved", "rejected"];
+        if (!allowedStatuses.includes(status)) {
+            return res.status(400).json({ message: "Invalid status value" });
+        }
+
+        const result = await db.collection("campaigns").findOneAndUpdate(
+            { _id: new ObjectId(id) },
+            { $set: { status } },
+            { returnDocument: "after" }
+        );
+
+        if (!result) {
+            return res.status(404).json({ message: "Campaign not found" });
+        }
+
+        res.status(200).json(result);
+    } catch (err) {
+        console.error("Error updating campaign status:", err);
+        res.status(500).json({ message: "Failed to update campaign status" });
+    }
+}
+
+module.exports = { createCampaign, getCampaigns, getCampaignById, updateCampaignStatus };
