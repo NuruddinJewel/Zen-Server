@@ -109,6 +109,8 @@ const categoryRoutes = require("./routes/category.routes");
 const campaignRoutes = require("./routes/campaign.routes");
 const contributionRoutes = require("./routes/contribution.routes");
 const withdrawalRoutes = require("./routes/withdrawal.routes");
+const userRoutes = require("./routes/user.routes");
+const reportRoutes = require("./routes/report.routes");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -127,6 +129,8 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/campaigns", campaignRoutes);
 app.use("/api/contributions", contributionRoutes);
 app.use("/api/withdrawals", withdrawalRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/reports", reportRoutes);
 async function start() {
     try {
         await connectDB();
