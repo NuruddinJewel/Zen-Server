@@ -52,6 +52,49 @@
 
 //2
 
+// const dns = require("node:dns");
+// dns.setServers(["8.8.8.8", "8.8.4.4"]);
+
+// const dotenv = require("dotenv");
+// dotenv.config();
+
+// const express = require("express");
+// const cors = require("cors");
+// const { connectDB } = require("./config/db");
+// const categoryRoutes = require("./routes/category.routes");
+// const campaignRoutes = require("./routes/campaign.routes");
+// const app = express();
+// const PORT = process.env.PORT || 5000;
+
+// const cookieParser = require("cookie-parser");
+// app.use(cookieParser());
+
+// app.use(cors());
+// app.use(express.json());
+
+// app.get("/", (req, res) => {
+//     res.send("Crowdfunding backend running");
+// });
+
+// app.use("/api/categories", categoryRoutes);
+// app.use("/api/campaigns", campaignRoutes);
+
+// async function start() {
+//     try {
+//         await connectDB();
+//         app.listen(PORT, () => {
+//             console.log(`Server running on port ${PORT}`);
+//         });
+//     } catch (err) {
+//         console.error("Failed to connect to DB:", err);
+//         process.exit(1);
+//     }
+// }
+
+// start();
+
+//3
+
 const dns = require("node:dns");
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
@@ -60,13 +103,19 @@ dotenv.config();
 
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const { connectDB } = require("./config/db");
 const categoryRoutes = require("./routes/category.routes");
+const campaignRoutes = require("./routes/campaign.routes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    credentials: true,
+}));
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -74,6 +123,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/categories", categoryRoutes);
+app.use("/api/campaigns", campaignRoutes);
 
 async function start() {
     try {
