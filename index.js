@@ -119,7 +119,7 @@ app.use(cors({
     origin: "https://zen-rise-two.vercel.app",
     credentials: true,
 }));
-app.use(cors());
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
